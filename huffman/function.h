@@ -9,7 +9,7 @@ void input(){
 	ofstream analyze;
 	analyze.open(file/analyze/example.txt,ios::app);
 	if(analyze.fail()){
-		system("cd. ")
+		system("cd. < file/analyze/example.txt")
 	}
 	
 	string a;
