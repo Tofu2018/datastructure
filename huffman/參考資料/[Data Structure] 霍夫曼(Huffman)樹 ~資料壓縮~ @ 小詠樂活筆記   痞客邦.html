@@ -1,0 +1,1509 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="zh-TW" itemscope itemtype="http://schema.org/Blog">
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta property="og:site_name" content="小詠樂活筆記 ">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:url" content="http://xken831.pixnet.net/blog/post/459581308">
+<meta property="og:type" content="article" />
+<meta property="og:title" content="[Data Structure] 霍夫曼(Huffman)樹 ~資料壓縮~ @ 小詠樂活筆記  :: 痞客邦 ::" />
+<meta property="og:description" content="假設我們擁有一串數字: 5,12,33,19,40,41, 這些數字均各自代表每個字串從文本取得的頻率資訊。  舉例來說，我(5), 想要(12), 車站(33), 汽車(19), 車牌(40), 轉" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="twitter:card" content="summary">
+<meta name="description" content="假設我們擁有一串數字: 5,12,33,19,40,41, 這些數字均各自代表每個字串從文本取得的頻率資訊。  舉例來說，我(5), 想要(12), 車站(33), 汽車(19), 車牌(40), 轉">
+<meta name="twitter:description" content="假設我們擁有一串數字: 5,12,33,19,40,41, 這些數字均各自代表每個字串從文本取得的頻率資訊。  舉例來說，我(5), 想要(12), 車站(33), 汽車(19), 車牌(40), 轉">
+<meta name="twitter:site" content="@pixnet">
+<meta name="author" content="陳小詠 (xken831)">
+<meta name="author-avatar-20" content="https://s2.pimg.tw/avatar/xken831/0/0/zoomcrop/20x20.png?v=1437745900">
+<meta name="static-version" content="b10b18433903a8b792fb34ef6def0e9e">
+<meta name="generator" content="PChoc">
+<meta name="keywords" content="旅遊,國內旅遊,國外旅遊,美食,3C教學,程式語言,電腦教學,陳小詠,小詠樂活筆記,小詠的回憶,生活綜合,Data Structure 學習筆記,[Data Structure] 霍夫曼(Huffman)樹 ~資料壓縮~">
+<link rel="canonical" href="http://xken831.pixnet.net/blog/post/459581308-%e9%9c%8d%e5%a4%ab%e6%9b%bc%28huffman%29%e6%a8%b9-%7e%e8%b3%87%e6%96%99%e5%a3%93%e7%b8%ae%7e">
+<meta name="twitter:url" content="http://xken831.pixnet.net/blog/post/459581308">
+<meta name="cover_image" content="https://s2.pimg.tw/album/xken831/element/688497672_1499129171-3057577304/zoomcrop/200x200.jpg">
+<meta name="twitter:image" content="https://pic.pimg.tw/xken831/1499129171-3139280360_n.jpg?v=1499129522">
+<link rel="image_src" href="https://pic.pimg.tw/xken831/1499129171-3139280360_n.jpg?v=1499129522">
+<meta property="og:image" content="https://pic.pimg.tw/xken831/1499129171-3139280360_n.jpg?v=1499129522">
+<link rel="image_src" href="https://pic.pimg.tw/xken831/1499129171-3057577304_n.jpg?v=1499129522">
+<meta property="og:image" content="https://pic.pimg.tw/xken831/1499129171-3057577304_n.jpg?v=1499129522">
+<link rel="image_src" href="https://pic.pimg.tw/xken831/1499129171-3291276827_n.jpg?v=1499129522">
+<meta property="og:image" content="https://pic.pimg.tw/xken831/1499129171-3291276827_n.jpg?v=1499129522">
+<link rel="image_src" href="https://pic.pimg.tw/xken831/1499129171-2230025953.jpg?v=1499129522">
+<meta property="og:image" content="https://pic.pimg.tw/xken831/1499129171-2230025953.jpg?v=1499129522">
+<link rel="image_src" href="https://pic.pimg.tw/xken831/1499129171-1629244788_n.jpg?v=1499129522">
+<meta property="og:image" content="https://pic.pimg.tw/xken831/1499129171-1629244788_n.jpg?v=1499129522">
+<link rel="image_src" href="https://pic.pimg.tw/xken831/1499129171-3518993757_n.jpg?v=1499129522">
+<meta property="og:image" content="https://pic.pimg.tw/xken831/1499129171-3518993757_n.jpg?v=1499129522">
+<link rel="image_src" href="https://pic.pimg.tw/xken831/1499129171-943773013_n.jpg?v=1499129522">
+<meta property="og:image" content="https://pic.pimg.tw/xken831/1499129171-943773013_n.jpg?v=1499129522">
+<link rel="image_src" href="https://pic.pimg.tw/xken831/1499129171-3764098163_n.jpg?v=1499129522">
+<meta property="og:image" content="https://pic.pimg.tw/xken831/1499129171-3764098163_n.jpg?v=1499129522">
+<link rel="image_src" href="https://pic.pimg.tw/xken831/1499129171-2930516817_n.jpg?v=1499129522">
+<meta property="og:image" content="https://pic.pimg.tw/xken831/1499129171-2930516817_n.jpg?v=1499129522">
+<link rel="image_src" href="https://pic.pimg.tw/xken831/1499129171-3202014996_n.jpg?v=1499129522">
+<meta property="og:image" content="https://pic.pimg.tw/xken831/1499129171-3202014996_n.jpg?v=1499129522">
+<link rel="prev" href="http://xken831.pixnet.net/blog/post/459568282-%5bmachine-learning%5d%5b%e9%a1%9e%e7%a5%9e%e7%b6%93%e7%b6%b2%e8%b7%af%28neural-network%29%5d-%e9%a1%9e%e7%a5%9e">
+<link rel="next" href="http://xken831.pixnet.net/blog/post/459606805-%5bandroid%5d-%e5%a6%82%e4%bd%95%e5%9c%a8-android-%e4%b8%ad%e5%8a%a0%e5%85%a5-java-jar-%e6%aa%94">
+<link rel="alternate" type="application/json+oembed" href="https://api.pixnet.cc/oembed?url=http%3A%2F%2Fxken831.pixnet.net%2Fblog%2Fpost%2F459581308-%25e9%259c%258d%25e5%25a4%25ab%25e6%259b%25bc%2528huffman%2529%25e6%25a8%25b9-%257e%25e8%25b3%2587%25e6%2596%2599%25e5%25a3%2593%25e7%25b8%25ae%257e&amp;format=json" title="PIXNET oEmbed Profile">
+<link rel="alternate" type="text/xml+oembed" href="https://api.pixnet.cc/oembed?url=http%3A%2F%2Fxken831.pixnet.net%2Fblog%2Fpost%2F459581308-%25e9%259c%258d%25e5%25a4%25ab%25e6%259b%25bc%2528huffman%2529%25e6%25a8%25b9-%257e%25e8%25b3%2587%25e6%2596%2599%25e5%25a3%2593%25e7%25b8%25ae%257e&amp;format=xml" title="PIXNET oEmbed Profile">
+<link rel="search" type="application/opensearchdescription+xml" href="http://xken831.pixnet.net/blog/opensearch" title="小詠樂活筆記 ">
+<title>[Data Structure] 霍夫曼(Huffman)樹 ~資料壓縮~ @ 小詠樂活筆記  :: 痞客邦 ::</title>
+<meta name="twitter:title" content="[Data Structure] 霍夫曼(Huffman)樹 ~資料壓縮~ @ 小詠樂活筆記  :: 痞客邦 ::">
+<base href="http://xken831.pixnet.net/blog/post/459581308">
+
+<style type="text/css">
+#links-row-1 .l0d161e-mIb-ad-sidebar-v2-l0d161e {display: block !important; min-width: 160px !important; min-height: 270px !important; margin-top: 0; z-index:100;}
+.l0d161e-mIb-ad-sidebar-v2-l0d161e * { padding: 0 ; margin: 0 ; border: 0; vertical-align: baseline; display: block; line-height: 1; }
+.l0d161e-mIb-ad-sidebar-v2-l0d161e .box-text { overflow:hidden; padding:0; margin:0; }
+.l0d161e-mIb-ad-sidebar-v2-l0d161e .box-text a {height: auto;}
+.l0d161e-mIb-border-l0d161e { padding: 0; min-width: 180px; min-height: 280px; margin: 12px auto; overflow: hidden; text-align:center; }
+.l0d161e-mIb-border-l0d161e img, .l0d161e-mIb-border-l0d161e div { margin:0 auto; display:inline-block; min-width:160px; }
+.l0d161e-mIb-border-l0d161e_1080 {padding: 0; width: 180px; height: 280px; margin: 12px auto; overflow: hidden;}
+.l0d161e-mIb-border-l0d161e div {position: relative;}
+</style>
+<link rel="stylesheet" href="//front.pixfs.net/css/mib/video.css?v=748e4eb8?v=b10b18433903a8b792fb34ef6def0e9e" type="text/css">
+<link rel="stylesheet" href="//front.pixfs.net/css/lang-css.css?v=53452873?v=b10b18433903a8b792fb34ef6def0e9e" type="text/css">
+<link rel="stylesheet" href="//front.pixfs.net/css/iframe-popup.css?v=79127c7c?v=b10b18433903a8b792fb34ef6def0e9e" type="text/css">
+<link rel="stylesheet" href="//s.pixfs.net/blog/plugins/plugins.min.css?v=b10b18433903a8b792fb34ef6def0e9e" type="text/css">
+<link rel="stylesheet" href="//front.pixfs.net/comment/openid-comment.css?v=b10b18433903a8b792fb34ef6def0e9e" type="text/css">
+<link rel="stylesheet" href="//front.pixfs.net/css/guestbook/style.min.css?v=1aa05f6e?v=b10b18433903a8b792fb34ef6def0e9e" />
+<link rel="stylesheet" href="//front.pixfs.net/css/desktop/styles/main.min.css?v=e9ee91c7?v=b10b18433903a8b792fb34ef6def0e9e">
+<link rel="stylesheet" href="https://css.pixnet.in/blog/xken831/normal.css?v=1510726004" type="text/css">
+<link rel="stylesheet" href="//front.pixfs.net/css/falcon-ad.css?v=fb18544c?v=b10b18433903a8b792fb34ef6def0e9e">
+<link rel="stylesheet" href="//front.pixfs.net/css/iframe-popup.css?v=79127c7c?v=b10b18433903a8b792fb34ef6def0e9e" type="text/css">
+<link rel="stylesheet" href="//front.pixfs.net/css/author-info.css?v=10d9e8f4?v=b10b18433903a8b792fb34ef6def0e9e" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://feed.pixnet.net/blog/posts/rss/xken831">
+<link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="http://feed.pixnet.net/blog/posts/atom/xken831">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://api.pixnet.cc/blog/xmlrpc?rsd=xken831">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://api.pixnet.cc/static/blog/wlwmanifest.xml">
+
+
+
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="//libs.pixfs.net/jquery.onappear/jquery.onAppear.min.js"></script>
+<script src="//libs.pixfs.net/json2/json2.min.js" type="text/javascript"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js" crossorigin="anonymous"></script>
+<script src="//libs.pixfs.net/spin.js/spin.min.js" type="text/javascript"></script>
+<script src="//libs.pixfs.net/angular-spinner/angular-spinner.min.js" type="text/javascript"></script>
+<script>
+var pix = pix || {};
+pix.panelsite = 'panel.pixnet.cc';
+pix.apisite = 'api.pixnet.cc';
+pix.login_name = '2b2cd129838239295150f23586bdfb60';
+pix.visitor = "ZDQzNDA4MzRlZGI0MDgxM2FkN2Q4YmRlNmY5MTg3ZjE=";
+pix.openid = "ZDQzNDA4MzRlZGI0MDgxM2FkN2Q4YmRlNmY5MTg3ZjE=";
+pix.member_uniqid = "ZDQzNDA4MzRlZGI0MDgxM2FkN2Q4YmRlNmY5MTg3ZjE=";
+pix.owner = 'xken831';
+pix.is_owner = false;
+pix.server_name = 'xken831.pixnet.net';
+pix.sToken = "ddc92cce1340facc31099a2ede3ad3de";
+pix.pixfssite = 's.pixfs.net';
+pix.falconsite = 'falcon.pixanalytics.com';
+pix.checklogin_version = 2;
+pix.secureProtocol = 'https://';
+pix.domain_append = '';
+// timezone: null;
+</script>
+<script  src="//member.pixnet.cc/api/checklogin.php?js=1&amp;unique=2305051365&amp;timestamp=1543892903&amp;type=799"></script>
+<script  src="https://s.pixfs.net/js/pixnet/checklogin.min.js?v=b10b18433903a8b792fb34ef6def0e9e"></script>
+<script type="text/javascript">
+<!--
+jQuery.noConflict();
+var pix = pix || {};
+pix.ab_testing_seed = 3179650365;
+dataLayer = window.dataLayer || [];
+//-->
+</script>
+<script src="//s.pixfs.net/js/lang/zh_TW.js?v=b10b18433903a8b792fb34ef6def0e9e" type="text/javascript"></script>
+<script src="//s.pixfs.net/js/pix.min.js?v=b10b18433903a8b792fb34ef6def0e9e" type="text/javascript" crossorigin="anonymous"></script>
+<script src="//s.pixfs.net/js/pix-addon.min.js?v=b10b18433903a8b792fb34ef6def0e9e" crossorigin="anonymous"></script>
+<script src="//front.pixfs.net/js/all.min.js?v=4f485d20?v=b10b18433903a8b792fb34ef6def0e9e" type="text/javascript" crossorigin="anonymous"></script>
+<script src="//front.pixfs.net/js/blog.min.js?v=9eb5134c?v=b10b18433903a8b792fb34ef6def0e9e" type="text/javascript" crossorigin="anonymous"></script>
+<script src="//front.pixfs.net/js/search_selection.min.js?v=86807582?v=b10b18433903a8b792fb34ef6def0e9e" type="text/javascript"></script>
+<script defer src="//front.pixfs.net/js/member-subscribe.min.js?v=b32963bb?v=b10b18433903a8b792fb34ef6def0e9e" crossorigin="anonymous"></script>
+<script src="//front.pixfs.net/module/fullPage/dist/ad-full-page.min.js?v=b10b18433903a8b792fb34ef6def0e9e" type="text/javascript" crossorigin="anonymous"></script>
+<meta itemprop="name" content="[Data Structure] 霍夫曼(Huffman)樹 ~資料壓縮~ @ 小詠樂活筆記  :: 痞客邦 ::">
+<meta itemprop="description" content="假設我們擁有一串數字: 5,12,33,19,40,41, 這些數字均各自代表每個字串從文本取得的頻率資訊。  舉例來說，我(5), 想要(12), 車站(33), 汽車(19), 車牌(40), 轉">
+
+<script type="text/javascript">
+<!--
+var pix = pix || {};
+pix.js_error_type = pix.js_error_type || 'frontblog';
+//-->
+</script>
+<script async type="text/javascript" src="//s.pixfs.net/js/pixlogger.min.js?v=b10b18433903a8b792fb34ef6def0e9e"></script>
+<script type="text/javascript">
+
+<!--
+(function(){
+    if (window.size().height > 10 && window.size().width > 10) {
+        var i = new Image(1,1);
+        i.src = '//counter.pixplug.in/count.php?timestamp=1543892903&random=1441671535&check=2982838457&data[blog]=%7B%22blogid%22%3A%224457462%22%7D&data[blogarticle]=%7B%22blogid%22%3A%224457462%22%2C%22articleid%22%3A%22459581308%22%7D&height=' + window.size().height + '&width=' + window.size().width + '&referer=' + encodeURI(document.referrer);
+        i.onload = function() { return; }
+    }
+})();
+//-->
+</script>
+<!-- Head Modified: 1543892903 -->
+<!-- async script -->
+<script type="text/javascript">
+<!--
+document.addEventListener('DOMContentLoaded', function () {
+    jQuery.ajaxSetup({ cache: true });
+    jQuery.getScript("https://js.pixplug.in/addon/11/production.js?v=1539597396", function(data, textStatus) { jQuery.ajaxSetup({cache: true});jQuery.pixAddonRelatedArticle({"blog_relatedarticleshow":"post","blog_relatedarticle":"site","blog_relatedtemplate":"system","addon_username":"xken831","addon_expired_at":0,"addon_ismobile":false,"addon_isvip":false,"addon_is_allow_setting":false,"ab_testing_seed":3179650365});jQuery.ajaxSetup({cache: false}); });
+    jQuery.ajaxSetup({ cache: false });
+});
+//-->
+</script>
+
+<!-- load sync script -->
+
+<!-- execute sync addon -->
+<script type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+var pix = pix || {};
+pix.visitor_url = "http://xken831.pixnet.net/blog";
+pix.visitor_timestamp = "1543892903";
+pix.visitor_nonce = "3439788098";
+pix.visitor_public = "LumrRMVHhADdttHSeUhMM8S3";
+pix.visitor_sig = "c3335e83619b5bfa3a5ee4ae4ab241d7";
+pix.user_name = null;
+pix.avatar_version = 0;
+(function() {
+    var js = document.createElement('script');
+    js.src = "\/\/s.pixfs.net\/visitor.pixplug.in\/checklogin.min.js?v=b10b18433903a8b792fb34ef6def0e9e";
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(js, s);
+})();
+//-->
+</script>
+    <script type="text/javascript" src="//front.pixfs.net/js/checkloop.min.js?v=e18dc181?v=b10b18433903a8b792fb34ef6def0e9e"></script>
+<meta http-equiv="imagetoolbar" content="no">
+<script type="text/javascript" src="//libs.pixfs.net/swfobject/1.5/swfobject.js"></script>
+<link href="//libs.pixfs.net/videojs/5.13.2/video-js.min.css" rel="stylesheet">
+<script src="//libs.pixfs.net/videojs/5.13.2/video.min.js" crossorigin="anonymous"></script>
+<meta property="falcon:blogcategory" content="28"><meta property="falcon:articlecategory" content="5"><script async src="//falcon-asset.pixfs.net/js/adsbyfalcon.min.js"></script><script src="//front.pixfs.net/js/mib_falcon--bundle.min.js?v=b10b18433903a8b792fb34ef6def0e9e" crossorigin="anonymous"></script>
+</head>
+
+<body id="article-main"
+  data-showing-advertisement="yep"
+  data-adsense-state=""
+  data-adsense-classification=""
+  data-blog-site-category-id="28"
+  data-mobile-mode="none"
+  data-ab-testing-seed="3179650365"
+  data-article-id="459581308"
+  data-comments-count="2"
+  class="category_5494216 article_459581308"
+    onDragStart="return false" oncontextmenu="return false" onselectstart="return false"
+    style="-moz-user-select: none;"
+    data-uniqid=""
+>
+
+<script type="text/javascript">
+_atrk_opts = { atrk_acct:"H00Mh1aIE700wg", domain:"pixnet.net",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=H00Mh1aIE700wg" style="display:none" height="1" width="1" alt="" /></noscript>
+
+<div class="header-prompt" id="header-prompt"></div>
+<div class="main-container">
+  <header class="navbar">
+    <div class="navbar-container"></div>
+<script>
+    var projectName = "blog";
+    var deviceType = "desktop";
+</script>
+<script src="//front.pixfs.net/js/pixnavbar-ui-module--bundle.min.js?v=b10b18433903a8b792fb34ef6def0e9e" defer></script>
+  </header>
+    <div class="" id="mib-video-expander">
+    <div class="mib-video-background">
+        <div class="mib-video-container mib-widescreen mib-centered">
+            <div class="l0d161e-sItemajidr-l0d161e" model="384x288">
+                        <video id="mib-video-player" class="video-js vjs-default-skin"
+                controls preload="auto" width="512" height="288">
+            </video>
+            </div>
+            <div class="mib-video-close"><a href="javascript:void(0);">關閉廣告</a></div>
+        </div>
+    </div>
+</div>
+    <ins class="adsbyfalcon" data-ad-client="1" data-ad-slot="3033" data-embed="false" style="display:inline-block;"></ins>  <div id="body-div">
+  <a name="top"></a>
+  <div id="container">
+    <div id="container2">
+      <div id="container3">
+          <div id="header">
+            <div id="banner">
+        <h1><a href="http://xken831.pixnet.net/blog">小詠樂活筆記 </a></h1>
+              <p class="skiplink"><a href="#article-area" title="skip the page header to the main content">跳到主文</a></p>
+                                          <h2>國內外旅遊、食記與3C教學</h2>
+          <p id="blog-category">部落格全站分類：<a href="//www.pixnet.net/blog/bloggers/category/28" target="_blank">生活綜合</a></p>
+            </div>
+            <ul id="navigation">
+              <li id="link-album"><a href="http://xken831.pixnet.net/album" title="go to gallery page of this user">相簿</a></li>
+              <li id="link-blog"><a href="http://xken831.pixnet.net/blog" title="go to index page of this blog">部落格</a></li>
+              <li id="link-guestbook">
+                                <a id="guestbook" data-msg="尚未安裝留言板，無法進行留言" data-action="none" href="#" title="go to guestbook page of this user">留言</a>
+                            </li>
+              <li id="link-profile"><a href="http://www.pixnet.net/pcard/xken831?utm_source=PIXNET&utm_medium=blog&utm_term=text&utm_content=4457462" title="go to profile page of this user">名片</a></li>
+            </ul>
+          </div><!-- #header//-->
+          <div id="main">
+            <div id="content">
+        <div id="spotlight">
+<h5>小詠樂活筆記</h5>
+<div id="spotlight-text">
+<script type="text/javascript" src="http://js1.bloggerads.net/showbanner.aspx?blogid=20140726000003&amp;charset=utf-8"></script>
+</div><!-- #spotlight-text -->
+</div><!-- #spotlight -->
+        <div id="article-area">
+    <div id="article-box">
+            <div class="article">
+        <ul class="article-head">
+        <li class="publish"><span class="month">Jul </span><span class="date">04 </span><span class="day">Tue </span><span class="year">2017 </span><span class="time">08:52</span></li>
+        <li class="title" id="article-459581308" data-hot-link="//www.pixnet.net/blog/articles/category/0" data-site-category="生活綜合" data-site-category-id="5" data-article-link="http://xken831.pixnet.net/blog/post/459581308"><h2><a href="http://xken831.pixnet.net/blog/post/459581308-%e9%9c%8d%e5%a4%ab%e6%9b%bc%28huffman%29%e6%a8%b9-%7e%e8%b3%87%e6%96%99%e5%a3%93%e7%b8%ae%7e">[Data Structure] 霍夫曼(Huffman)樹 ~資料壓縮~</a></h2></li>
+        </ul>
+        <div class="article-body">
+                <div class="article-content">
+            
+            <div class="article-content-inner" id="article-content-inner">
+                <p><span style="font-size:18px">假設我們擁有一串數字: 5,12,33,19,40,41, 這些數字均各自代表每個字串從文本取得的頻率資訊。</span></p>
+
+<p><span style="font-size:18px">舉例來說，我(5), 想要(12), 車站(33), 汽車(19), 車牌(40), 轉彎(41)。</span></p>
+
+<p><span style="font-size:18px">•在建構 Huffman tree (霍夫曼樹)前，我們要先針對此數字串進行小到大的排序，會得到下列的結果:</span></p>
+
+<p><span style="font-size:18px">•5,12,19,33,40,41</span></p>
+
+<p><span style="font-size:18px">•接下來我們開始介紹如何建構&nbsp; Huffman tree (霍夫曼樹):</span></p>
+
+<p><span style="font-size:18px"><img alt="Huffman_1.jpg" src="https://pic.pimg.tw/xken831/1499129171-3139280360_n.jpg" title="Huffman_1.jpg"></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:18px">節點結合步驟: 每次都挑兩個最小值的節點進行合併</span></p>
+
+<p><span style="font-size:18px"><img alt="Huffman_2.jpg" src="https://pic.pimg.tw/xken831/1499129171-3057577304_n.jpg" title="Huffman_2.jpg"></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:18px">合併會產生一個新節點，並且依大小排入尚未合併的數字串中</span></p>
+
+<p><span style="font-size:18px"><img alt="Huffman_3.jpg" src="https://pic.pimg.tw/xken831/1499129171-3291276827_n.jpg" title="Huffman_3.jpg"></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:18px">移動33與36</span></p>
+
+<p><span style="font-size:18px"><img alt="Huffman_4.jpg" src="https://pic.pimg.tw/xken831/1499129171-2230025953.jpg" title="Huffman_4.jpg"></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:18px">移動40與41</span></p>
+
+<p><span style="font-size:18px"><img alt="Huffman_5.jpg" src="https://pic.pimg.tw/xken831/1499129171-1629244788_n.jpg" title="Huffman_5.jpg"></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:18px">最後合併成一棵樹為止</span></p>
+
+<p><span style="font-size:18px"><img alt="Huffman_6.jpg" src="https://pic.pimg.tw/xken831/1499129171-3518993757_n.jpg" title="Huffman_6.jpg"></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:18px">接著節點的左邊為0，右邊為1</span></p>
+
+<p><span style="font-size:18px"><img alt="Huffman_7.jpg" src="https://pic.pimg.tw/xken831/1499129171-943773013_n.jpg" title="Huffman_7.jpg"></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:18px">然後我們針對葉節點(原本的數字)進行編碼，從最高層的葉節點開始編碼。</span></p>
+
+<p><span style="font-size:18px"><img alt="Huffman_8.jpg" src="https://pic.pimg.tw/xken831/1499129171-3764098163_n.jpg" title="Huffman_8.jpg"></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:18px">然後從第二層的葉節點開始編碼。</span></p>
+
+<p><span style="font-size:18px"><img alt="Huffman_9.jpg" src="https://pic.pimg.tw/xken831/1499129171-2930516817_n.jpg" title="Huffman_9.jpg"></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:18px">然後從第三層的葉節點開始編碼。</span></p>
+
+<p><span style="font-size:18px"><img alt="Huffman_10.jpg" src="https://pic.pimg.tw/xken831/1499129171-3202014996_n.jpg" title="Huffman_10.jpg"></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:18px">資料壓縮率</span></p>
+
+<p><span style="font-size:18px">轉換回原來對應的文本概念，就是每個數字代表字串出現在文本的頻率:</span></p>
+
+<p><span style="font-size:18px">•原本的資料量: 8 bit*(5+12+19+33+40+41) = 1200</span></p>
+
+<p><span style="font-size:18px">•霍夫曼編碼後: 2*(33+40+41)+3*(19)+4*(5+12) = 353</span></p>
+
+<p><span style="font-size:18px">•壓縮率 = (1- (353/1200))*100%, = 70.58%</span></p>
+            </div>
+                                                
+<div class="author-profile">
+    <div class="author-profile__header">創作者介紹</div>
+
+    <div class="author-profile__main">
+        <a href="http://www.pixnet.net/pcard/xken831?utm_source=PIXNET&utm_medium=post&utm_term=card&utm_content=459581308">
+            <img class="author-profile__avatar" src="https://s2.pimg.tw/avatar/xken831/0/0/resize/80x0.png?v=1437745900" alt="創作者 陳小詠 的頭像">
+        </a>
+        <div class="author-profile__content">
+            <a
+                class="author-profile__name"
+                href="http://www.pixnet.net/pcard/xken831?utm_source=PIXNET&utm_medium=post&utm_term=card&utm_content=459581308"
+            >陳小詠</a>
+            <p class="author-profile__info">小詠樂活筆記 </p>
+            <div class="social-links">
+                                                                                                <a
+                            class="social-link"
+                            href="mailto:x831617@gmail.com"
+                            target="_blank"
+                            data-social-type="mail"
+                        >
+                            <img class="social-link__icon" src="http://front.pixfs.net/images/blog/post/mobile/social/btn_article_social_mail.svg?v=b10b18433903a8b792fb34ef6def0e9e" alt="" />
+                        </a>
+                                                                                                                        </div>
+        </div>
+                    <div class="author-profile__subscribe hoverable">
+                
+        <a class="subscribe-btn" href="https://panel.pixnet.cc/login/openid?done=http%3A%2F%2Fxken831.pixnet.net%2Fblog%2Fpost%2F459581308-%25E9%259C%258D%25E5%25A4%25AB%25E6%259B%25BC%28huffman%29%25E6%25A8%25B9-%7E%25E8%25B3%2587%25E6%2596%2599%25E5%25A3%2593%25E7%25B8%25AE%7E&openid=https%3A%2F%2Fmember.pixnet.cc%2Flogin&easy_login=1" data-follow-state="關注"></a>
+            </div>
+            </div>
+</div>
+
+<script>
+(function() {
+    if (!ga) {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    }
+
+    ga('create', 'UA-408650-33', 'auto', {'name': 'subScribeTracker'});
+    var authorAvatar = document.querySelector('.author-profile .author-profile__avatar');
+    var authorName = document.querySelector('.author-profile .author-profile__name');
+    var authorSocialLinks = document.querySelectorAll('.author-profile .author-profile__content .social-link');
+
+    authorAvatar.addEventListener('click', function () { recordEvent('author image'); });
+    authorName.addEventListener('click', function () { recordEvent('author name'); });
+    Array.prototype.forEach.call(authorSocialLinks, function (link) {
+        link.addEventListener('click', function () {
+            var label = link.getAttribute('data-social-type');
+            recordEvent(label);
+        });
+    });
+
+    function recordEvent (label) {
+        var _piq = window._piq || [];
+        _piq.push(['trackEvent', 'author-Intro', 'click-author-Intro', label]);
+        ga('subScribeTracker.send', 'event', 'author-Intro', 'click-author-Intro', label);
+    };
+})();
+</script>
+                                </div> <!-- .article-content //-->
+
+        <p class="author">
+            陳小詠 發表在 <a href="https://www.pixnet.net/">痞客邦</a>                    <a href="http://xken831.pixnet.net/blog/post/459581308-%e9%9c%8d%e5%a4%ab%e6%9b%bc%28huffman%29%e6%a8%b9-%7e%e8%b3%87%e6%96%99%e5%a3%93%e7%b8%ae%7e#comments">留言</a>(2) <span class="author-views">人氣(<span id="BlogArticleCount-459581308"></span>)</span>
+                    </p> <!-- .author //-->
+        <div class="forward">
+            <a href="javascript:;" onclick="pix.sendForwardTo('%E6%82%A8%E7%9A%84%E5%A5%BD%E6%9C%8B%E5%8F%8B%E9%82%80%E8%AB%8B%E6%82%A8%E8%A7%80%E7%9C%8B%20xken831%20%E7%9A%84%E7%97%9E%E5%AE%A2%E9%82%A6%20PIXNET%20%E9%83%A8%E8%90%BD%E6%A0%BC%E6%96%87%E7%AB%A0-%5BData%20Structure%5D%20%E9%9C%8D%E5%A4%AB%E6%9B%BC%28Huffman%29%E6%A8%B9%20%7E%E8%B3%87%E6%96%99%E5%A3%93%E7%B8%AE%7E','%E6%82%A8%E5%A5%BD%EF%BC%8C%0A%0A%E6%82%A8%E7%9A%84%E5%A5%BD%E6%9C%8B%E5%8F%8B%E9%82%80%E8%AB%8B%E6%82%A8%E8%A7%80%E7%9C%8B%20xken831%20%E7%9A%84%E7%97%9E%E5%AE%A2%E9%82%A6%20PIXNET%20%E9%83%A8%E8%90%BD%E6%A0%BC%E6%96%87%E7%AB%A0-%5BData%20Structure%5D%20%E9%9C%8D%E5%A4%AB%E6%9B%BC%28Huffman%29%E6%A8%B9%20%7E%E8%B3%87%E6%96%99%E5%A3%93%E7%B8%AE%7E%0A%E8%B6%8A%E5%A4%9A%E4%BA%BA%E7%9C%8B%E5%88%B0%EF%BC%8C%E5%8F%AF%E5%B9%AB%E4%BB%96%E5%A2%9E%E5%8A%A0%E8%B6%8A%E5%A4%9A%E4%BA%BA%E6%B0%A3%E5%96%94%7EGO%EF%BC%81%0A----------%0AJuly4%2C2017%0A%5BData%20Structure%5D%20%E9%9C%8D%E5%A4%AB%E6%9B%BC%28Huffman%29%E6%A8%B9%20%7E%E8%B3%87%E6%96%99%E5%A3%93%E7%B8%AE%7E%0A%0A%E5%81%87%E8%A8%AD%E6%88%91%E5%80%91%E6%93%81%E6%9C%89%E4%B8%80%E4%B8%B2%E6%95%B8%E5%AD%97%3A%205%2C12%2C33%2C19%2C40%2C41%2C%20%E9%80%99%E4%BA%9B%E6%95%B8%E5%AD%97%E5%9D%87%E5%90%84%E8%87%AA%E4%BB%A3%E8%A1%A8%E6%AF%8F%E5%80%8B%E5%AD%97%E4%B8%B2%E5%BE%9E%E6%96%87%E6%9C%AC%0A----------%0A%E9%A6%AC%E4%B8%8A%E7%9C%8B%20http%3A%2F%2Fxken831.pixnet.net%2Fblog%2Fpost%2F459581308-%25e9%259c%258d%25e5%25a4%25ab%25e6%259b%25bc%2528huffman%2529%25e6%25a8%25b9-%257e%25e8%25b3%2587%25e6%2596%2599%25e5%25a3%2593%25e7%25b8%25ae%257e%0A----------%0A%E7%97%9E%E5%AE%A2%E9%82%A6%20PIXNET%0Ahttp%3A%2F%2Fwww.pixnet.net%2F')">E-mail轉寄</a>
+        </div> <!-- .forward //-->
+        <br>
+<div style="position: static !important; display:block !important;visibility: visible !important; float: none !important; text-align: center">
+<div style="width: 620px; height: 250px; padding-bottom: 10px;">
+    <div id="w5ee90787c6d448f8ab4c1077" style="width: 300px; height: 250px; float: left; padding-right: 1px;">
+        <ins class="adsbyfalcon" data-ad-client="1" data-ad-slot="1077" data-embed="false" style="display:inline-block;"></ins>                <script src="https://static.criteo.net/js/ld/publishertag.js"></script>
+        <div id="crt-701fb163" style="width:300px; height:250px; margin: 0 auto;"></div>
+        <script>
+        Criteo.DisplayAcceptableAdIfAdblocked({
+           "zoneid": 439225,
+           "containerid": "crt-701fb163"
+        });
+        </script>
+            </div>
+    <div id="w5ee90787c6d448f8ab4c1032" style="width: 300px; height: 250px; float: left;">
+    </div>
+</div>
+<script>
+(function($) {
+    var w = $('.article-content:first').width(),
+        ad1032 = $('#w5ee90787c6d448f8ab4c1032');
+    if (w >= 600) {
+        ad1032.append("<ins class=\"adsbyfalcon\" data-ad-client=\"1\" data-ad-slot=\"1032\" data-embed=\"false\" style=\"display:inline-block;\"><\/ins>");
+    } else if (w >= 550 && w <= 599) {
+        ad1032.append("<ins class=\"adsbyfalcon\" data-ad-client=\"1\" data-ad-slot=\"1603\" data-embed=\"false\" style=\"display:inline-block;\"><\/ins>");
+    }
+})(jQuery);
+</script>
+</div>
+        </div> <!-- .article-body //-->
+        <div class="article-footer">
+        <ul class="refer">
+            <li>全站分類：<a href="//www.pixnet.net/blog/articles/category/5">生活綜合</a></li>            <li>個人分類：<a href="http://xken831.pixnet.net/blog/category/5494216">Data Structure 學習筆記</a></li>                        <li>上一篇： <a class="quick-nav--pre" rel="prev" href="http://xken831.pixnet.net/blog/post/459568282-%5bmachine-learning%5d%5b%e9%a1%9e%e7%a5%9e%e7%b6%93%e7%b6%b2%e8%b7%af%28neural-network%29%5d-%e9%a1%9e%e7%a5%9e" data-public-at="1499043210" data-thumb="https://s9.pimg.tw/album/xken831/element/688423779_1499043001-4277680960/zoomcrop/90x90.jpg">[Machine Learning][類神經網路(Neural Network)] 類神經網路 (Neural Network) 教學</a></li>
+<li>下一篇： <a class="quick-nav--next" rel="next" href="http://xken831.pixnet.net/blog/post/459606805-%5bandroid%5d-%e5%a6%82%e4%bd%95%e5%9c%a8-android-%e4%b8%ad%e5%8a%a0%e5%85%a5-java-jar-%e6%aa%94" data-public-at="1499308541" data-thumb="https://s9.pimg.tw/album/xken831/element/688648059_1499308533-2516240441/zoomcrop/90x90.jpg">[Android] 如何在 Android 中加入 java jar 檔</a></li>
+        </ul>
+                        <div class="back-to-top"><a href="#top" title="back to the top of the page">▲top</a></div>
+        </div> <!-- .article-footer //-->
+        </div>
+
+<script>
+// track 上下篇點擊
+(function ($) {
+    'use strict';
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-408650-10', 'auto', {'name': 'quickNavTracker'});
+    ga('quickNavTracker.set', 'page', '/blog/');
+
+    var referBlock = $('.refer'),
+        quickNav = {
+            catPre: {
+                selector: '.quick-nav--cat-pre',
+                name: '此分類上一篇',
+            },
+            catNext: {
+                selector: '.quick-nav--cat-next',
+                name: '此分類下一篇',
+            },
+            pre: {
+                selector: '.quick-nav--pre',
+                name: '上一篇',
+            },
+            next: {
+                selector: '.quick-nav--next',
+                name: '下一篇',
+            }
+        },
+
+        trackEvent = function (action, label) {
+            ga('quickNavTracker.send', 'event', 'previous-next-page', action, label, { nonInteraction: ('imps' === action) });
+        },
+
+        bindClick = function (selector, label) {
+            referBlock.on('click', selector, function () {
+                trackEvent('click', label);
+            });
+        };
+
+    for (var key in quickNav) {
+        var obj = quickNav[key];
+        if (referBlock.find(obj.selector).length) {
+            /* 不再記錄曝光 */
+
+            // 點擊時紀錄
+            bindClick(obj.selector, obj.name);
+        }
+    }
+
+})(jQuery);
+</script>
+<script>
+    (function ($) {
+                var articleInner = document.querySelectorAll('.article-content-inner')[0],
+            paragraphs = articleInner.querySelectorAll('p, hr, div'),
+            minInterval = 1500,
+            betweenAdInterval = 600,
+                        paragraphsNumber = paragraphs.length - 1,
+            index = Math.floor(paragraphsNumber / 2),
+            adPosition = paragraphs[index],
+            adGap = 0,
+            adIndexes = [],
+            hasAd = false,
+            betweenAdGap = 0;
+
+        for (var i = 0; i < paragraphsNumber; i++) {
+            var putAd = false;
+            if (paragraphs[i].parentNode !== articleInner) {
+                continue;
+            }
+            adGap += paragraphs[i].clientHeight;
+            if (adGap < minInterval) {
+                continue;
+            }
+
+                        if (hasAd) {
+                betweenAdGap += paragraphs[i].clientHeight;
+                if (betweenAdGap < betweenAdInterval) {
+                    continue;
+                }
+                hasAd = false;
+            }
+
+            if (hasAdInParagraph(paragraphs[i]) || hasAdInParagraph(paragraphs[i+1])) {
+                hasAd = true;
+                continue;
+            }
+
+                        if (paragraphs[i].innerText.trim().length === 0) {
+                putAd = true;
+            }
+
+                        if (paragraphs[i].innerText.length < 30 && paragraphs[i].style.backgroundColor !== "") {
+                putAd = true;
+            }
+
+                        if (hasImageInParagraph(paragraphs[i]) && hasImageInParagraph(paragraphs[i+1])) {
+                putAd = true;
+            }
+
+                        if (!hasImageInParagraph(paragraphs[i]) && !hasImageInParagraph(paragraphs[i+1])) {
+                putAd = true;
+            }
+
+            if (putAd) {
+                adIndexes.push(i);
+                adGap = 0;
+            }
+        }
+
+        adIndexes.map(function (index, i) {
+            paragraphs[index].innerHTML += generateInReadAd(i + 1);
+        });
+
+                if (paragraphsNumber === 0) {
+            $('.author-profile').before(generateInReadAd(1));
+            return;
+        }
+
+                function generateInReadAd(index) {
+            index = Math.max(1, index);
+            var MIBClass = 1 ? ' mib-ad-box' : '';
+
+            return '<div class="article-inread-ad' + MIBClass + '" data-adindex="' + index + '">' +
+                generateInReadAdPos(index - 1) + '</div>';
+        }
+
+                function generateInReadAdPos(id) {
+            var ads = [
+                                    '<ins class="adsbyfalcon" data-ad-client="1" data-ad-slot="3132" data-embed="false" style="display:inline-block;width:336px;height:280px;"></ins>',
+                                    '<ins class="adsbyfalcon" data-ad-client="1" data-ad-slot="3133" data-embed="false" style="display:inline-block;width:336px;height:280px;"></ins>',
+                                    '<ins class="adsbyfalcon" data-ad-client="1" data-ad-slot="3134" data-embed="false" style="display:inline-block;width:336px;height:280px;"></ins>',
+                                    '<ins class="adsbyfalcon" data-ad-client="1" data-ad-slot="3135" data-embed="false" style="display:inline-block;width:336px;height:280px;"></ins>',
+                                ],
+                key = Math.min(Math.floor(id / 6), ads.length - 1);
+
+                return ads[key];
+        }
+
+                function hasAdInParagraph(p) {
+            return p.innerHTML.toLowerCase().indexOf('<iframe') >= 0;
+        }
+
+                function hasImageInParagraph(p) {
+            return p.innerHTML.toLowerCase().indexOf('<img') >= 0;
+        }
+    })(jQuery);
+</script>
+    </div> <!-- #article-box //-->
+          <div id="user-post">
+    <div id="comment-box" class="user-post-box">
+      <a name="comments"></a>
+      <h3 id="comment-title" class="user-post-title" onclick="pix.commentSwitch('comment-text','comment-text-switch');" style="cursor:hand;cursor:pointer;"><img id="comment-text-switch" src="//s.pixfs.net/blog/images/choc/minus.gif"> <span>留言列表 (2)</span></h3>
+      <div class="post-comment"><a href="/blog/post/459581308-%E9%9C%8D%E5%A4%AB%E6%9B%BC(huffman)%E6%A8%B9-~%E8%B3%87%E6%96%99%E5%A3%93%E7%B8%AE~#comment-form">發表留言</a></div>
+
+      <div id="comment-text" class="user-post-text">
+                          <ul class="single-post">
+                        <li class="post-info">
+              <a name="comment-123346802"> </a>
+              <span class="floor">#1</span>
+              <span class="user-name"><img class="identity-provider comment-icon lazy" data-original="//front.pixfs.net/comment/images/openid-pixnet-icon.gif" width="16" height="16"> 訪客</span>                                                        <span class="post-time">於 2018/01/14 02:30</span>
+                            </li>
+              <li class="post-photo">
+              <img src="//s.pixfs.net/blog/images/choc/avatar-neutral.png" alt="訪客" height="90" width="90">              </li>
+                        <li class="post-text">
+                                <p id="comment-123346802"></p>
+                                謝謝你的文章解說<br />
+可不可以請問<br />
+資料壓縮率的第一行 : 1200<br />
+以及第二行 : 353<br />
+是怎麼算出來的 ?<br />
+謝謝                            </li>
+                                      <li class="reply-text">
+              假設每個節點代表某個字，然後其數字代表它在文本中出現的次數，所以此壓縮代表對於整個文本的壓縮率，我文中對於此部份沒有詳細解釋，稍後會補上，感謝提問              <p><a href="http://xken831.pixnet.net/blog" target="_blank">陳小詠</a> 於 2018/01/14 16:48 回覆              </li>
+                                  </ul>
+                          <ul class="single-post">
+                        <li class="post-info">
+              <a name="comment-124128980"> </a>
+              <span class="floor">#2</span>
+              <span class="user-name"><img class="identity-provider comment-icon lazy" data-original="//front.pixfs.net/comment/images/openid-pixnet-icon.gif" width="16" height="16"> <a href="http://www.pixnet.net/pcard/sharemoviesnet" target="_blank" rel="nofollow">jarred69reed72</a></span>                            <a class="homepage" rel="nofollow" href="http://www.pixnet.net/pcard/sharemoviesnet" target="_blank"><img class="comment-icon" src="//front.pixfs.net/comment/images/info-website.gif" alt="jarred69reed72" title="jarred69reed72"></a>
+                                                        <span class="post-time">於 2018/07/24 10:44</span>
+                            </li>
+              <li class="post-photo">
+              <a href="http://www.pixnet.net/pcard/sharemoviesnet" target="_blank" rel="nofollow"><img src="https://s4.pimg.tw/avatar/sharemoviesnet/0/0/zoomcrop/90x90.png?v=" alt="jarred69reed72" height="90" width="90"></a>              </li>
+                        <li class="post-text">
+                                <p id="comment-124128980"></p>
+                                more info in <a target="_blank" href="http://seriesonline.fm/" rel="nofollow">http://seriesonline.fm/</a>                            </li>
+                                            </ul>
+            </div> <!-- #comment-text //-->
+      <div id='comment_form'>
+      </div>
+    </div> <!--  #comment-box //-->
+  </div> <!-- #user-post //-->
+<script type="text/javascript">
+<!--
+jQuery(function() {
+    // ajax 接postcommentAction產生的comment form
+    var action = location.href;
+    action = action.replace('/post/', '/postcomment/');
+    jQuery.ajaxSetup({ cache: true });
+    jQuery.ajax({
+        type: 'GET',
+        url: action,
+        data: {"getForm": 1, "isMobile": 0},
+        dataType: 'json',
+        success: function(data) {
+            jQuery('#comment_form').html(data.form);
+
+            // 未登入點擊留言 textarea 顯示經驗值前往註冊/登入提示 popup
+            if (!pix.member_token) {
+                var openExpPromptLoginPopup = false;
+
+                document.querySelector('#comment-box').addEventListener('click', function () {
+                    if (!openExpPromptLoginPopup) {
+                        pixgame.showPromptLoginPopup();
+                    }
+
+                    openExpPromptLoginPopup = true;
+                });
+            }
+
+            setTimeout(function () {
+                if (jQuery.pixQuestionary && 'function' === typeof jQuery.pixQuestionary) {
+                  jQuery.pixQuestionary(pix.user_name);
+                }
+            }, 1000);
+
+            // 用來判斷是否有安裝'留言插入表情符號' App
+            if (jQuery.pixAddonCommentEmotion && 'function' === typeof jQuery.pixAddonCommentEmotion) {
+                // 裝了App 但沒表情符號可選, 須重新call function
+                if (! document.getElementById('comment-emotion')) {
+                    jQuery.pixAddonCommentEmotion();
+                }
+            }
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+    jQuery.ajaxSetup({ cache: false });
+
+    jQuery('.comment-icon').attr('style', 'vertical-align:middle;');
+});
+// -->
+</script>
+
+
+        </div> <!-- #article-area //-->
+            </div> <!-- #content //-->
+            <div id="links">
+              <div id="links-row-1">
+                                    <div class="hslice box google-adsense" id="googleadsense2">
+    <h4 class="box-title entry-title">
+                	    </h4>
+    <div class="box-text entry-content">
+
+<script type="text/javascript">
+    google_ad_client = "ca-pub-2567839050605880";
+    google_ad_host = "ca-host-pub-2647689032095179";
+    google_ad_slot = "6031041870";
+    google_ad_width = 200;
+    google_ad_height = 200;
+</script>
+<!-- ADUNIT002 -->
+<script type="text/javascript"
+src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>    </div>
+</div> <!-- #googleadsense2 //-->
+<div class="hslice box l0d161e-mIb-ad-sidebar-v2-l0d161e" data-plugin_type="mibsidebar1">
+    <div class="box-text entry-content">
+        <div class="l0d161e-mIb-border-l0d161e dark">
+            <div class="l0d161e-sItemajidr-l0d161e" model="180x280">
+                
+            <div class="mib__video-player-background u-mib-non-visible">
+                <video class="video-js vjs-default-skin mib__video-player--sidebar"
+                    id="mib-video-player-sidebar--mibsidebar1"
+                controls preload="auto" width="180" height="180">
+            </video>
+	    <div class="mib__video-player-btn-play">
+                <div class="mib__video-player-btn-play-outer-circle"></div>
+                <a class="mib__video-player-btn-play__button mib__video-player-btn-play__button-is-play" href="#">
+                    <div class="mib__video-player-btn-play__button-icon mib__video-player-btn-play__button-is-play">
+                        <svg height="100%" width="100%" fill="#f857a6">
+                            <polygon class="mib__video-player-btn-play__button-icon-triangle" points="5,0 30,15 5,30" viewBox="0 0 30 15"></polygon>
+                            <path class="mib__video-player-btn-play__button-icon-path" d="M5,0 L30,15 L5,30z" fill="none" stroke="#f857a6" stroke-width="1"></path>
+                        </svg>
+                    </div>
+                </a>
+                <div class="mib__video-player-btn-play__countdown" style="display: none">
+                    <div class="mib__video-player-btn-play__countdown-number"></div>
+                    <svg class="mib__video-player-btn-play__circle">
+                        <circle r="18" cx="20" cy="20"></circle>
+                    </svg>
+                </div>
+            </div>
+            <img class="mib__video-player-btn-expand" style="display: none" src="//front.pixfs.net/module/mib/img/btn-expand.png?v=b10b18433903a8b792fb34ef6def0e9e" data-close-button-url="//front.pixfs.net/module/mib/img/btn-close.png?v=b10b18433903a8b792fb34ef6def0e9e">
+            </div>
+            
+            </div>
+        </div><!-- /.mib-border -->
+    </div>
+</div>
+<div class="hslice box l0d161e-mIb-ad-sidebar-v2-l0d161e" data-plugin_type="mibsidebar2">
+    <div class="box-text entry-content">
+        <div class="l0d161e-mIb-border-l0d161e dark">
+            <div class="l0d161e-sItemajidr-l0d161e" model="180x280">
+                
+            <div class="mib__video-player-background u-mib-non-visible">
+                <video class="video-js vjs-default-skin mib__video-player--sidebar"
+                    id="mib-video-player-sidebar--mibsidebar2"
+                controls preload="auto" width="180" height="180">
+            </video>
+	    <div class="mib__video-player-btn-play">
+                <div class="mib__video-player-btn-play-outer-circle"></div>
+                <a class="mib__video-player-btn-play__button mib__video-player-btn-play__button-is-play" href="#">
+                    <div class="mib__video-player-btn-play__button-icon mib__video-player-btn-play__button-is-play">
+                        <svg height="100%" width="100%" fill="#f857a6">
+                            <polygon class="mib__video-player-btn-play__button-icon-triangle" points="5,0 30,15 5,30" viewBox="0 0 30 15"></polygon>
+                            <path class="mib__video-player-btn-play__button-icon-path" d="M5,0 L30,15 L5,30z" fill="none" stroke="#f857a6" stroke-width="1"></path>
+                        </svg>
+                    </div>
+                </a>
+                <div class="mib__video-player-btn-play__countdown" style="display: none">
+                    <div class="mib__video-player-btn-play__countdown-number"></div>
+                    <svg class="mib__video-player-btn-play__circle">
+                        <circle r="18" cx="20" cy="20"></circle>
+                    </svg>
+                </div>
+            </div>
+            <img class="mib__video-player-btn-expand" style="display: none" src="//front.pixfs.net/module/mib/img/btn-expand.png?v=b10b18433903a8b792fb34ef6def0e9e" data-close-button-url="//front.pixfs.net/module/mib/img/btn-close.png?v=b10b18433903a8b792fb34ef6def0e9e">
+            </div>
+            
+            </div>
+        </div><!-- /.mib-border -->
+    </div>
+</div>
+<div class="hslice box google-adsense" id="googleadsense1">
+    <h4 class="box-title entry-title">
+                	    </h4>
+    <div class="box-text entry-content">
+
+<script type="text/javascript">
+    google_ad_client = "ca-pub-2567839050605880";
+    google_ad_host = "ca-host-pub-2647689032095179";
+    google_ad_slot = "2199963297";
+    google_ad_width = 200;
+    google_ad_height = 200;
+</script>
+<!-- ADUNIT001 -->
+<script type="text/javascript"
+src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>    </div>
+</div> <!-- #googleadsense1 //-->
+<div class="hslice box" id="hot-article">
+    <h4 class="box-title entry-title">
+            熱門文章    	    </h4>
+    <div class="box-text entry-content">
+
+<ul id="hotArtUl">
+</ul>
+<script type="text/javascript">
+<!--
+jQuery('#hot-article #hotArtUl').load('/blog/hotarticledata?limit=5');
+// -->
+</script>
+    </div>
+</div> <!-- #hot-article //-->
+<div class="hslice box" id="category">
+    <h4 class="box-title entry-title">
+            文章分類    	    </h4>
+    <div class="box-text entry-content">
+
+<div class="box-more">
+<img src="//s.pixfs.net/blog/images/choc/expand.gif" alt="unfold all categories" style="cursor:hand;cursor:pointer;" onClick="pix.openAllCategory('open');">
+<img src="//s.pixfs.net/blog/images/choc/collapse.gif" alt="fold all categories" style="cursor:hand;cursor:pointer;" onClick="pix.openAllCategory('close');">
+</div>
+
+<ul><!-- ie6bug
+--><li><a href="/blog/category/5549222">Natural Language Processing 學習筆記 (11)</a></li><!-- ie6bug --><li><a href="/blog/category/5508731">Python 學習筆記 (27)</a></li><!-- ie6bug --><li><a href="/blog/category/5494216">Data Structure 學習筆記 (1)</a></li><!-- ie6bug --><li><a href="/blog/category/5477681">SQLite 學習筆記 (4)</a></li><!-- ie6bug --><li><a href="/blog/category/5477627">Text Mining 學習筆記 (17)</a></li><!-- ie6bug --><li><a href="/blog/category/5470871">Machine Learning 學習筆記 (9)</a></li><!-- ie6bug --><li><a href="/blog/category/5307305">Java 學習筆記 (60)</a></li><!-- ie6bug --><li><a href="/blog/category/5453075">Android 學習筆記 (28)</a></li><!-- ie6bug --><li><a href="/blog/category/4853057">國外旅遊 (109)</a></li><!-- ie6bug --><li><a href="/blog/category/4893875">國內旅遊 (53)</a></li><!-- ie6bug --><li><a href="/blog/category/5477672">==================== (0)</a></li><!-- ie6bug --><li><a href="/blog/category/5028208">宜蘭美食 (7)</a></li><!-- ie6bug --><li><a href="/blog/category/5514353">基隆美食 (1)</a></li><!-- ie6bug --><li><a href="/blog/category/4953119">台北美食 (112)</a></li><!-- ie6bug --><li><a href="/blog/category/4992980">台中美食 (5)</a></li><!-- ie6bug --><li><a href="/blog/category/4953122">高雄美食 (15)</a></li><!-- ie6bug --><li><a href="/blog/category/5471069">=================== (0)</a></li><!-- ie6bug --><li><a href="/blog/category/4904489">程式相關 (21)</a></li><!-- ie6bug --><li><a href="/blog/category/4933127">文書處理 (25)</a></li><!-- ie6bug --><li><a href="/blog/category/4853048">應用軟體 (47)</a></li><!-- ie6bug --><li><a href="/blog/category/5017325">學習 (22)</a></li><!-- ie6bug --><li><a href="/blog/category/5017337">讀書心得分享 (6)</a></li><!-- ie6bug --><li><a href="/blog/category/5017331">生活記事 (81)</a></li><!-- ie6bug --><li><a href="/blog/category/5017329">電影評論 (65)</a></li><!-- ie6bug --></ul>
+    </div>
+</div> <!-- #category //-->
+<div class="hslice box" id="recent-article">
+    <h4 class="box-title entry-title">
+            最新文章    	    </h4>
+    <div class="box-text entry-content">
+
+<ul>
+<li><a href="/blog/post/466147334">[台北][石牌]  滷三塊 ~石牌 五花肉飯~</a></li>
+<li><a href="/blog/post/465847466">[台北][北投] 張吳記 什錦麵 ~近北投捷運站~</a></li>
+<li><a href="/blog/post/465626597">[台北][石牌] 孫東寶 台式牛排教父 ~石牌店~</a></li>
+<li><a href="/blog/post/463880651">[Python] 印出 exception 資訊</a></li>
+<li><a href="/blog/post/463819754">[Java] 過濾標點符號的正規表達式</a></li>
+</ul>
+    </div>
+</div> <!-- #recent-article //-->
+<div class="hslice box" id="latest-comment">
+    <h4 class="box-title entry-title">
+            最新留言    	    </h4>
+    <div class="box-text entry-content">
+
+<script type="text/javascript"><!--
+jQuery('#latest-comment div').load('/blog/plugin/latestcomment');
+//--></script>
+    </div>
+</div> <!-- #latest-comment //-->
+<div class="hslice box" id="newsfeed">
+    <h4 class="box-title entry-title">
+            動態訂閱    	    </h4>
+    <div class="box-text entry-content">
+
+<script type="text/javascript"><!--
+jQuery('#newsfeed div').load('/blog/plugin/subs');
+//--></script>
+    </div>
+</div> <!-- #newsfeed //-->
+<div class="hslice box" id="search">
+    <h4 class="box-title entry-title">
+            文章搜尋    	    </h4>
+    <div class="box-text entry-content">
+
+<form method="post" action="http://xken831.pixnet.net/blog/search/" id="search-form" data-wording-needkeyword="請輸入關鍵字">
+	<ul>
+	    <li><input name="search-target" id="search-target" type="text" ></li>
+	    <li><input id="search-submit" type="submit" value="搜尋" ></li>
+	</ul>
+    </form>
+    <script type="text/javascript">//<!--
+    jQuery('#search-form').submit(function(event){
+        if ('' === jQuery('#search-target').val()) {
+            alert(jQuery(this).attr('data-wording-needkeyword'));
+            event.preventDefault();
+        }
+    });
+    //--></script>
+    </div>
+</div> <!-- #search //-->
+<div id="user-info" class="hslice box">
+    <h4 class="box-title entry-title">
+        個人資訊            </h4>
+    <div class="box-text entry-content">
+        <a class="user-img" href="http://www.pixnet.net/pcard/xken831?utm_source=PIXNET&utm_medium=blog&utm_term=box&utm_content=4457462"><img src="https://s2.pimg.tw/avatar/xken831/0/0/zoomcrop/90x90.png?v=1437745900" /></a>
+        <div class="user-action hoverable">
+            
+        <a class="subscribe-btn" href="https://panel.pixnet.cc/login/openid?done=http%3A%2F%2Fxken831.pixnet.net%2Fblog%2Fpost%2F459581308-%25E9%259C%258D%25E5%25A4%25AB%25E6%259B%25BC%28huffman%29%25E6%25A8%25B9-%7E%25E8%25B3%2587%25E6%2596%2599%25E5%25A3%2593%25E7%25B8%25AE%7E&openid=https%3A%2F%2Fmember.pixnet.cc%2Flogin&easy_login=1" data-follow-state="關注"></a>
+        </div>
+
+        <dl>
+            <dt>暱稱：</dt><dd>陳小詠</dd>
+            <dt>分類：</dt><dd><a href="//www.pixnet.net/blog/bloggers/category/28">生活綜合</a></dd>
+
+                            <dt>好友：</dt><dd>共11位 <a href="#" id="user-info-open-friends-iframe">(看全部)</a></dd>
+            
+            
+            
+            
+            
+            
+            
+
+                                            <dt>地區：</dt>
+                                    <dd>台北市</dd>
+                            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                    </dl>
+    </div>
+</div>
+
+<div class="hslice box" id="counter">
+    <h4 class="box-title entry-title">
+            參觀人氣    	    </h4>
+    <div class="box-text entry-content">
+
+<ul>
+    <li>本日人氣：<span id="blog_hit_daily"></span></li>
+    <li>累積人氣：<span id="blog_hit_total"></span></li>
+</ul>
+<script type="text/javascript"><!--
+    jQuery.getScript('//counter.pixplug.in/getcounter.php?now=1543892903&random=2437740762&data[%23BlogArticleCount-459581308]=%7B%22counter%22%3A%5B%22blogarticle%22%2C%224457462%22%2C%22459581308%22%2C%22total%22%5D%2C%22options%22%3A%5B%5D%7D&data[%23blog_hit_daily]=%7B%22counter%22%3A%5B%22blog%22%2C%224457462%22%2C1%2C%22daily%22%5D%2C%22options%22%3A%5B%5D%7D&data[%23blog_hit_total]=%7B%22counter%22%3A%5B%22blog%22%2C%224457462%22%2C1%2C%22total%22%5D%2C%22options%22%3A%5B%5D%7D&check=3944630856');
+//--></script>
+    </div>
+</div> <!-- #counter //-->
+<div class="hslice box" id="announce">
+    <h4 class="box-title entry-title">
+            站方公告    	    </h4>
+    <div class="box-text entry-content">
+
+<ul>
+    <li><a href='http://admin.pixnet.net/blog/post/46355142-%5b%e5%85%ac%e5%91%8a%5d-%e7%97%9e%e5%ae%a2%e9%82%a6%e7%a4%be%e7%be%a4%e5%bd%b1%e9%9f%bf%e5%8a%9b%e5%85%ac%e5%bc%8f%e5%84%aa%e5%8c%96%ef%bc%81' target='_blank'>[公告] 2018年12月起，痞客邦社群影響力公式優化！</a></li><li><a href='http://admin.pixnet.net/blog/post/46327275-2018-11-12%e3%80%8ehttps%e5%84%aa%e5%8c%96%e6%90%b6%e5%85%88%e7%89%88%e3%80%8f%e6%93%b4%e5%85%85%e5%8a%9f%e8%83%bd%e4%b8%8a%e7%b7%9a%e5%9b%89%ef%bc%81' target='_blank'>[公告] 2018/11/12『HTTPS優化搶先版』擴充功能上線囉！</a></li><li><a href='http://admin.pixnet.net/blog/post/46328589-%5b%e5%85%ac%e5%91%8a%5d-%e3%80%8c%e5%bb%a3%e5%91%8a%e8%87%aa%e4%b8%bb%e8%a8%88%e7%95%ab%e3%80%8d%e7%ac%ac%e4%ba%8c%e9%9a%8e%e6%ae%b5%e6%ad%a3%e5%bc%8f%e5%95%9f%e5%8b%95%ef%bc%9a' target='_blank'>[公告] 「廣告自主計畫」第二階段正式啟動：提高廣告分潤！</a></li></ul>    </div>
+</div> <!-- #announce //-->
+
+<div class="hslice box" id="powered">
+    <h4 class="box-title entry-title">
+            POWERED BY    	    </h4>
+    <div class="box-text entry-content">
+
+<ul>
+    <li><a href="//www.pixnet.net" title="pixnet"><img src="//s.pixfs.net/blog/images/choc/pixnet-logo.png" ></a></li>
+    <li><a href="https://panel.pixnet.cc/login/openid?done=http%3A%2F%2Fxken831.pixnet.net%2Fblog%2Fpost%2F459581308-%25E9%259C%258D%25E5%25A4%25AB%25E6%259B%25BC%28huffman%29%25E6%25A8%25B9-%7E%25E8%25B3%2587%25E6%2596%2599%25E5%25A3%2593%25E7%25B8%25AE%7E&openid=https%3A%2F%2Fmember.pixnet.cc%2Flogin&easy_login=1&from_service=Blog">(登入)</a></li>
+</ul>
+    </div>
+</div> <!-- #powered //-->
+
+              </div> <!-- #links-row-1 //-->
+              <div id="links-row-2">
+                                </div> <!-- #links-row-2 //-->
+                <div id="ad-mib">
+                    <script>
+pix.MIB = pix.MIB || {};
+pix.MIB.config = {
+    hosthash: 'c5c6fbe2c92ebe63bd20c7d30f920c27',
+    dr: {source: 'xken831'},
+    goldAds: document.querySelectorAll('.l0d161e-sItemajidr-l0d161e'),
+    uniq: 'c9345189b8fbe21720294741ab34aeac6e24619792903',
+    percentSite: '//falcon.pixanalytics.com/mib/vap',
+    falconSite: '//falcon.pixanalytics.com',
+    cate: '28',
+    hasMIB: 1,
+    canPutVideo: true,
+    article_cate_id: '5',
+    demo: {
+        hash: '',
+        demoOption: 6    },
+    availablePositions: [{
+        id: 1,
+        name: 'sidebar-1',
+        enable: 1
+    },{
+        id: 1,
+        name: 'sidebar-2',
+        enable: true    },{
+        id: 3,
+        name: 'video',
+        enable: true    },{
+        id: 8,
+        name: 'unfold',
+        enable: true    },{
+        id: 10,
+        name: 'fly-desktop-image',
+        enable: true    },{
+        id: 11,
+        name: 'fly-mobile-image',
+        enable: true    },{
+        id: 12,
+        name: 'fly-mobile-video',
+        enable: true    },{
+                id: 14,
+        name: 'desktop_article_ad',
+        enable: true    }],
+    ref: ''
+};
+(function() {
+    var goldAds = pix.MIB.config.goldAds;
+        var isMobile = "";
+    if (goldAds[0] && !isMobile) {
+        pix.MIB.build.generate();
+        pix.MIB.build.detectPageScrollPlayback();
+    }
+})();
+</script>
+                </div><!-- #ad-mib //-->
+            </div> <!-- #links //-->
+          </div> <!-- #main //-->
+          <div id="footer">
+      <p><script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushPerl.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushPowerShell.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js"></script>
+<script type="text/javascript">
+  SyntaxHighlighter.all();
+</script><br><br><link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css"/><br> <script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js"><!--mce:0--></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-53928324-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script src="//google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=desert"></script></p>
+            <div id="bottom">
+              <a class="bottom-skiplink" href="http://xken831.pixnet.net/blog/post/459581308-%E9%9C%8D%E5%A4%AB%E6%9B%BC(huffman)%E6%A8%B9-~%E8%B3%87%E6%96%99%E5%A3%93%E7%B8%AE~/#top" title="back to the top of the page">回到頁首</a>
+              <a class="bottom-skiplink" href="http://xken831.pixnet.net/blog/post/459581308-%E9%9C%8D%E5%A4%AB%E6%9B%BC(huffman)%E6%A8%B9-~%E8%B3%87%E6%96%99%E5%A3%93%E7%B8%AE~#article-area" title="back to the main cotent of the page">回到主文</a>
+              <a class="bottom-pixnet" href="//member.pixnet.cc/register">免費註冊</a>
+              <a target="_blank" class="bottom-pixnet" href="http://help.pixnet.tw">客服中心</a>
+              <a target="_blank" class="bottom-pixnet" href="http://www.pixnet.net">痞客邦首頁</a>
+          &copy; 2003 - 2018 PIXNET
+            </div>
+          </div> <!-- #footer //-->
+        </div> <!-- #container3 //-->
+      <div id="extradiv11"></div>
+      <div id="extradiv10"></div>
+      <div id="extradiv9"></div>
+      <div id="extradiv8"></div>
+    </div> <!-- #container2 //-->
+    <div id="extradiv7"></div>
+    <div id="extradiv6"></div>
+    <div id="extradiv5"></div>
+    <div id="extradiv4"></div>
+  </div> <!-- #container //-->
+  <div id="extradiv3"></div>
+  <div id="extradiv2"></div>
+  <div id="extradiv1"></div>
+  <div id="extradiv0"></div>
+  </div> <!-- #body-div //-->
+  <div class="octopus" data-zone="3"></div>
+</div>
+
+<script type="text/javascript">
+<!--
+jQuery(window).on('load', function () {
+    //autoImgResize
+  '1';
+      jQuery.settings = jQuery.settings || {};
+    jQuery.settings.autoImgResize = {
+      mode:+'1',
+      resizWidth:+'400',
+      selector:'content'
+    };
+
+    if (2 === jQuery.settings.autoImgResize.mode) {
+      jQuery.settings.autoImgResize.resizWidth = jQuery('.article-content').width();
+    }
+    pix.autoImgResize(jQuery.settings.autoImgResize.resizWidth, jQuery.settings.autoImgResize.selector);
+  
+
+});
+//-->
+</script>
+<script type="text/javascript">
+<!--
+jQuery(function() {
+    pix.fixPixnetPlayerID();
+    jQuery('.article-head').find('.column-star').each(function() {
+        var column_link = jQuery(this).attr('data-column-link');
+        jQuery(this).find('h2').append(' <a title="專欄之星" href="' + column_link + '" target="_blank"><img title="專欄之星" alt="column star article" src="http://s.pixfs.net/blog/images/choc/column_star.gif"></a>');
+    });
+    jQuery('.article-hot').each(function() {
+    jQuery(this).find('h2').append(' <a class="__dailyhotclass" title="本日熱門" href="' + jQuery(this).attr('data-hot-link') + '" target="_blank"><img title="熱門文章" alt="hot article today" src="https://s.pixfs.net/blog/images/choc/today_hot.gif"></a>');
+    });
+});
+//-->
+</script>
+<script src="//front.pixfs.net/js/mixpanel.js?v=4b36ae69?v=b10b18433903a8b792fb34ef6def0e9e"></script>
+<script src="//front.pixfs.net/js/blog-mixpanel.min.js?v=09e150d3?v=b10b18433903a8b792fb34ef6def0e9e"></script>
+<script type="text/javascript">
+<!--
+  if (typeof dataLayer === 'undefined') dataLayer = [];
+
+dataLayer.push({
+    "blog_page_type": "post",
+    "keyword": "",
+    "page_meta": "xken831\/blog\/post\/459581308-[Data Structure] 霍夫曼(Huffman)樹 ~資料壓縮~",
+    "user_cat_id": "5494216",
+    "user_cat_name": "Data Structure 學習筆記",
+    "is_testing_43400": false,
+    "is_partner_program": false,
+    "is_mobile_mode": false,
+    "is_spam": "0",
+    "user_name": "xken831",
+    "page_type": "blog",
+    "service_type": "blog",
+    "page_view": "\/blog\/",
+    "blog_name": "小詠樂活筆記 ",
+    "blog_cat": "28 - 生活綜合",
+    "is_loggedin": false,
+    "is_VIP": false,
+    "is_obstruct": false,
+    "viewer_type": "Regular Member",
+    "article_title": "[Data Structure] 霍夫曼(Huffman)樹 ~資料壓縮~",
+    "article_id": "459581308",
+    "article_cat": "5 - 生活綜合",
+    "is_cached": true
+});
+
+-->
+</script>
+
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-KGMWFG" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<script type="text/javascript">
+<!--
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-408650-10', 'auto', 'gaMainTracker', {'allowLinker': true, 'legacyCookieDomain': 'none'});
+ga('gaMainTracker.require', 'linker');
+ga('gaMainTracker.set', 'member1', 'GUEST');
+ga('gaMainTracker.set', 'vip1', 'nonVIP');
+
+
+ga('gaMainTracker.send', 'pageview', '/blog/');
+
+
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KGMWFG');
+
+(function() {
+    var cookieMatchImg = new Image();
+    cookieMatchImg.src = '//cm.g.doubleclick.net/pixel?google_nid=pixnet_dmp&google_cm';
+})();
+//-->
+
+</script>
+
+<!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '510235355828933');
+fbq('track', "PageView");</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=510235355828933&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+<div id="popup-frame" style="display:none">
+    <div id="frame-dimmer"></div>
+    <div id="frame-box">
+       <div id="frame-border"></div>
+       <div id="frame-header">
+           <h3></h3>
+	   <a href="#" class="frame-close" title="關閉視窗"><span>關閉視窗</span></a>
+       </div>
+       <div id="frame-content"></div>
+    </div>
+</div>
+
+<script defer src="https://s.pixanalytics.com/js/c.js?v=9"></script>
+<script type="text/javascript">
+<!--
+document.addEventListener('DOMContentLoaded', function () {
+
+var _type = window._type || '';
+
+_type = 'front_blog'; _uCount();
+_type = 'front_blog_byarticlecategory:5'; _uCount();
+_type = 'front_blog_bysitecategory:28'; _uCount();
+if (document.location.toString().indexOf('/post/') != -1) {
+    _type = 'front_blog_post'; _uCount();
+    _type = 'front_blog_post_nonvip'; _uCount();
+}
+
+if (document.location.toString().indexOf('/search/') != -1) {
+    _type = 'front_blog_search'; _uCount();
+}
+
+});
+//-->
+</script>
+<script src="//referer.pixplug.in/static/r.js?v=b10b18433903a8b792fb34ef6def0e9e" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+_currentPageUsername = 'xken831';
+_refererCount();
+//-->
+</script>
+<script>
+var _piq = _piq || [];
+
+_piq.push(
+    ['setCustomVar', 'venue', 'pixnet'],
+    ['setCustomVar', 'author_id', pix.owner],
+        ['setCustomVar', 'article_category_id', "5"],
+        ['setCustomVar', 'nonce', pix.login_name],
+    ['setCustomVar', 'visitor_id', pix.visitor],
+    ['setCustomVar', 'visitor_openid', pix.openid],
+    ['setCustomVar', 'member_uniqid', pix.member_uniqid],
+    ['trackPageView']
+);
+(function(d, t, u, f, j) {
+    f = d.getElementsByTagName(t)[0];
+    j = d.createElement(t);
+    j.async = 1;
+    j.src = u;
+    f.parentNode.insertBefore(j, f);
+})(document, 'script', 'https://s.pixanalytics.com/js/pi.min.js?v=20181115');
+
+(function () {
+    document.addEventListener('DOMContentLoaded', function () {
+                var viewTimeStart = new Date().getTime(),
+            _driveMode = ('none' === jQuery(document.body).data('mobileMode')) ? 'desktop' : 'mobile';
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                var viewTimeEnd = new Date().getTime(),
+                    stayTime = viewTimeEnd - viewTimeStart;
+
+                                _piq.push(['trackEvent', 'article_stay_time', '離開頁面', _driveMode, stayTime]);
+            } else {
+                viewTimeStart = new Date().getTime();
+            }
+        });
+
+        jQuery('#pixad1032').on('click', 'a', function() {
+            if ('styleme' === jQuery(this).data('source')) {
+                _piq.push(['trackEvent', 'yahoo 大聯盟導購', '金鑽版位點擊']);
+            }
+        });
+
+        var pixad1032ImpTracking = function() {
+            var container = jQuery('#pixad1032');
+
+            if (0 === container.find('a').length) {
+                setTimeout(pixad1032ImpTracking, 500);
+                return;
+            }
+
+            if ('styleme' == container.find('a').data('source')) {
+                _piq.push(['trackEvent', 'yahoo 大聯盟導購', '金鑽版位曝光']);
+            }
+        };
+        pixad1032ImpTracking();
+    });
+
+    window.addEventListener('beforeunload', function () {
+        var targetElement = document.querySelector('.article-content-inner'),
+            elementHeight = targetElement.offsetHeight,
+            totalOffsetTop = 0,
+            maxScrollDepth = window.scrollY,
+            scrollPosition = Math.max(window.scrollY, (maxScrollDepth ? maxScrollDepth : 0));
+
+        while (targetElement) {
+            totalOffsetTop += (targetElement.offsetTop - targetElement.scrollTop + targetElement.clientTop);
+            targetElement = targetElement.offsetParent;
+        }
+
+        scrollPosition = Math.min(Math.max(0, scrollPosition - totalOffsetTop), elementHeight);
+
+        _piq.push(['trackEvent', 'article_read_completion', '', elementHeight + "::" + scrollPosition, Number.parseFloat(scrollPosition / elementHeight).toFixed(2)]);
+    });
+})();
+</script>
+<script defer src="https://front.pixfs.net/js/pixinsight.min.js?v=d9d11f0c?v=b10b18433903a8b792fb34ef6def0e9e"></script>
+
+
+<!-- Modified: 1543892903 -->
+<!-- async script -->
+<script type="text/javascript">
+<!--
+document.addEventListener('DOMContentLoaded', function () {
+jQuery.ajaxSetup({ cache: true });
+jQuery.getScript("https://js.pixplug.in/addon/86/production.js?v=1542272022", function(data, textStatus) { jQuery.pixBookmarkButtons({"position":"top","addon_username":"xken831","addon_expired_at":0,"addon_ismobile":false,"addon_isvip":false,"addon_is_allow_setting":true,"ab_testing_seed":3179650365}); });
+jQuery.getScript("https://js.pixplug.in/addon/98/production.js?v=1539669278", function(data, textStatus) { jQuery.pixShowPlurk({"addon_username":"xken831","addon_expired_at":0,"addon_ismobile":false,"addon_isvip":false,"addon_is_allow_setting":true,"ab_testing_seed":3179650365}); });
+jQuery.getScript("https://js.pixplug.in/addon/206/production.js?v=1539669310", function(data, textStatus) { jQuery.pixShowTwitter({"addon_username":"xken831","addon_expired_at":0,"addon_ismobile":false,"addon_isvip":false,"addon_is_allow_setting":true,"ab_testing_seed":3179650365}); });
+jQuery.ajaxSetup({ cache: false });
+});
+//-->
+</script>
+
+<!-- load sync script -->
+<script src="//js.pixplug.in/addon/84/production.js?v=1539224744" type="text/javascript"></script>
+
+<!-- execute sync addon -->
+<script type="text/javascript">jQuery(function($){
+$("#content img").lazyload({
+effect:"fadeIn",
+placeholder: "https://s.pixfs.net/js/jquery.lazyload/grey.gif"
+});
+});
+</script>
+
+
+
+<script>pix.stylemeTags = [];</script>
+<script src="//front.pixfs.net/js/styleme.min.js?v=b5457d95?v=b10b18433903a8b792fb34ef6def0e9e" crossorigin="anonymous"></script>
+
+<script>
+(function () {
+    pix.octopusTags = null;
+    if (null === pix.octopusTags || undefined === pix.octopusTags) {
+        return;
+    }
+    for (var i = 0; i < pix.octopusTags.length; i++) {
+        if ('' === pix.octopusTags[i]) {
+            continue;
+        }
+        _piq.push(['trackEvent', 'otopusTag', '', pix.octopusTags[i]]);
+    }
+})();
+</script>
+
+
+<script>
+  var nineyi_group    = "X1";
+  var nineyi_keyindex = "0";
+  var nineyi_match    = "";
+  var nineyi_id       = "pix91_deab5ba8f13e71fd42de8e819134fc66";
+  var nineyi_products = [{"asset":"0104","image":"\/\/pic.pimg.tw\/pixnetvisual\/1446126120-4162329176_s.jpg?v=1446126272","title":"MissHana\u82b1\u5a1c\u5c0f\u59d0\u5b8c\u7f8e\u7121\u75d5\u4e09\u8272\u906e\u7455\u818f","oprice":"380","nprice":"299","link":"\/\/www.86shops.com.tw\/SalePage\/Index\/1256490"},{"asset":"0138","image":"\/\/pic.pimg.tw\/pixnetvisual\/1446126147-4136062762_s.jpg?v=1446126272","title":"E\u2027Heart \u4f0a\u5fc3 \u6301\u4e45\u96b1\u5f62\u96d9\u9762\u96d9\u773c\u76ae\u8cbc","oprice":"348","nprice":"180","link":"\/\/www.86shops.com.tw\/SalePage\/Index\/344734"},{"asset":"0143","image":"\/\/pic.pimg.tw\/pixnetvisual\/1446126150-2749437497_s.jpg?v=1446126272","title":"3CE (3CONCEPT EYES) \u8d85\u986f\u8272\u5507\u818f","oprice":"499","nprice":"399","link":"\/\/www.86shops.com.tw\/SalePage\/Index\/1610019"},{"asset":"0223","image":"\/\/pic.pimg.tw\/pixnetvisual\/1446126232-3103690318_s.jpg?v=1446126273","title":"ND \u812b\u6bdb\u871c\u881f\/\u9664\u6bdb\u871c\u881f 220g","oprice":"299","nprice":"299","link":"\/\/www.86shops.com.tw\/SalePage\/Index\/1035850"},{"asset":"0160","image":"\/\/pic.pimg.tw\/pixnetvisual\/1446126167-2508883353_s.jpg?v=1446126272","title":"\u97d3\u570b RiRe \u9ed1\u982d\u7c89\u523a\u6e05\u6f54\u5237 \u4e59\u652f\u5165(\u5167\u9644\u6e05\u6f54\u4e7320mL)","oprice":"290","nprice":"290","link":"\/\/www.86shops.com.tw\/SalePage\/Index\/640966"},{"asset":"0109","image":"\/\/pic.pimg.tw\/pixnetvisual\/1446126124-168867797_s.jpg?v=1446126272","title":"Miss Hana \u82b1\u5a1c\u5c0f\u59d0 \u6c34\u611f\u63a7\u8272CC\u971c","oprice":"349","nprice":"299","link":"\/\/www.86shops.com.tw\/SalePage\/Index\/668815"}];
+</script>
+<script id="idleTemplate" type="text/x-jsrender" data-main="//front.pixfs.net/module/idlePop/js/idlePop.min.js?v=b10b18433903a8b792fb34ef6def0e9e">
+<link rel="stylesheet" href="//front.pixfs.net/module/idlePop/css/idlePop.min.css?v=ddeecebb?v=b10b18433903a8b792fb34ef6def0e9e">
+<div class="modal idle-pop" tabindex="-1" role="dialog" aria-describedby="dialog">
+  <div class="modal-bg"></div>
+  <div class="modal-dialog">
+    <a class="modal-close" data-close="【 關閉 X 】"></a>
+
+    <div class="modal-content">
+      <div class="modal-header">本網頁已閒置超過 3 分鐘。請點 <kbd>關閉</kbd> 或 <kbd>點擊</kbd>任一空白處，即可回到網頁</div>
+      <div class="modal-body">
+        <div class="blogger-info">
+            <a class="blogger-info__avatar" href="http://www.pixnet.net/pcard/xken831?utm_source=PIXNET&utm_medium=post&utm_term=pause&utm_content=459581308"><img src="{{:user.avatar}}" alt="{{:user.name}} 的大頭貼"></a>
+
+          <div class="blogger-info__profile">
+            <div class="blogger-info__row">
+              <dl>
+                <dt>部落格名稱</dt>
+                <dd><a href="{{:blog.link}}">{{:blog.name}}</a></dd>
+              </dl>
+            </div>
+
+            <div class="blogger-info__row">
+              <dl>
+                <dt>人氣</dt>
+                <dd data-unit="人">{{:blog.hits.total}}</dd>
+
+                <dt>好友數</dt>
+                <dd data-unit="人">{{:user.friends_count}}</dd>
+
+                <dt>文章總數</dt>
+                <dd data-unit="篇">{{:blog.articles_count}}</dd>
+              </dl>
+            </div>
+
+            <div class="blogger-info__row hoverable">
+                
+        <a class="subscribe-btn" href="https://panel.pixnet.cc/login/openid?done=http%3A%2F%2Fxken831.pixnet.net%2Fblog%2Fpost%2F459581308-%25E9%259C%258D%25E5%25A4%25AB%25E6%259B%25BC%28huffman%29%25E6%25A8%25B9-%7E%25E8%25B3%2587%25E6%2596%2599%25E5%25A3%2593%25E7%25B8%25AE%7E&openid=https%3A%2F%2Fmember.pixnet.cc%2Flogin&easy_login=1" data-follow-state="關注"></a>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="idle-adsense">
+        </div>
+
+        <div class="idle-related-posts">
+          {{for posts}}
+          <a class="idle-related-post" href="{{:link}}">
+            <img src="{{:thumb}}" alt="文章縮圖">
+            <div class="idle-related-post__detail">
+              <h4>{{:title}}</h4>
+              <div class="idle-related-post__desc" data-readmore="繼續閱讀">{{:body}}</div>
+            </div>
+          </a>
+          {{/for}}
+        </div>
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+</script>
+
+<script src="//front.pixfs.net/js/hide-ad-checker.min.js?v=8e1fb39e?v=b10b18433903a8b792fb34ef6def0e9e" crossorigin="anonymous"></script>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+            var moveHouse = document.querySelector('.move-screen');
+            if (moveHouse) {
+                _piq.push(['trackEvent', 'moveHouse', 'DOMContentLoaded', 'desktop']);
+            }
+    });
+</script>
+<script>
+_oq = window._oq || [];
+_oq.push(
+    ['categoryId', document.body.dataset.blogSiteCategoryId],
+    ['octopusTags', pix.octopusTags || []],
+    ['articleTitle', document.querySelector('.title > h2 > a').innerText],
+    ['octopusDom', document.getElementsByClassName('octopus')],
+);
+</script>
+<script>
+(function () {
+    window.requestAnimFrame = (function () {
+        'use strict';
+        return  window.requestAnimationFrame       ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame    ||
+                window.oRequestAnimationFrame      ||
+                window.msRequestAnimationFrame     ||
+                function (callback) {
+                    window.setTimeout(callback, 1000 / 60);
+                };
+    })();
+
+    // handle multiple browsers for cancelAnimationFrame() ref:https://msdn.microsoft.com/zh-tw/library/hh920765(v=vs.85).aspx
+    window.cancelAnimFrame = (function () {
+        return window.cancelAnimationFrame ||
+            window.webkitCancelAnimationFrame ||
+            window.mozCancelAnimationFrame ||
+            window.oCancelAnimationFrame ||
+            function (id) {
+                window.clearTimeout(id);
+            };
+    })();
+
+    pix.octopusTags = null;
+    if (null === pix.octopusTags || undefined === pix.octopusTags) {
+        return;
+    }
+    for (var i = 0; i < pix.octopusTags.length; i++) {
+        if ('' === pix.octopusTags[i]) {
+            continue;
+        }
+        _piq.push(['trackEvent', 'otopusTag', '', pix.octopusTags[i]]);
+    }
+})();
+</script>
+</body>
+</html>
