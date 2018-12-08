@@ -34,6 +34,9 @@
 		</Compiler>
 		<Unit filename="frame.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="main.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />

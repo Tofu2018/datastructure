@@ -17,9 +17,8 @@ struct node{
 
 void menu(register short re){
     system("title Huffman MakeTree/Coder/Encoder-[Menu]");
-    register short select = 0;
-    if(re == 0)
-    {
+    register int select = 0;
+    if(re == 0){
         cout << "[選單]" << endl;
         cout << "1.輸入建樹資料(Input Make Tree Data)-[file/analyze/sample.txt]" << endl
              << "2.建立霍夫曼樹(Make Huffman Tree)-[file/tree/huffmantree.txt]" << endl
@@ -33,22 +32,22 @@ void menu(register short re){
     cin.sync();
 	switch(select){
 		case 1 :
-			//function(select);
+			function(select);
 			break;
 		case 2 :
-			//function(select);
+			function(select);
 			break;
 		case 3 :
-			//function(select);
+			function(select);
 			break;
 		case 4 :
-			//function(select);
+			function(select);
 			break;
 		case 5 :
-			//function(select);
+			function(select);
             break;
 		case 6 :
-			exit(0);
+            exit(0);
 			break;
 		default :
             cout << "輸入錯誤!" << endl
@@ -58,15 +57,16 @@ void menu(register short re){
             //system("pause");
             if(re>=3){
                 re = 0;
-                cout << re <<endl;
-                system("cls");
+                //cout << re <<endl;
                 system("pause");
+                system("cls");
             }
             menu(re);
     }
 };
 
-void fuction(register short mode){
+void function(register short mode){
+	system("cls");
 	// filename 開檔名稱 filenameI/O input/output
 	string filenameI1 = "", filenameI2 = "", filenameO1 = "", filenameO2 = "";
 	switch(mode){
@@ -108,7 +108,6 @@ void fuction(register short mode){
 	}
 
 	register short select;
-	string filemode;
 	cout << "1.複寫檔案(並備份舊擋)" << endl
 		 << "2.增加資料(保留原資料)" << endl;
 	FMODE:
@@ -116,7 +115,6 @@ void fuction(register short mode){
 	cin >> select;
 	cin.sync();
 	if(select == 1){
-		filemode = "ios::out";
 		switch(mode){
 			case 1 :
 				system("copy file/analyze/sample.txt file/old/analyze/sample.txt");
@@ -140,7 +138,7 @@ void fuction(register short mode){
 				exit(1);
 		}
 	}else if(select == 2){
-		filemode = "ios::app";
+
 	}else{
 		cout << "錯誤!" << endl
 			 << "請重新輸入!" << endl;
@@ -171,36 +169,46 @@ void fuction(register short mode){
 		}
 	}
 	if(filenameO1 != ""){
-		output1.open(filenameI1.c_str(),filemode);
+		switch(select){
+            case 1 :
+                output1.open(filenameO1.c_str(),ios::out);
+            case 2 :
+                output1.open(filenameO1.c_str(),ios::app);
+		}
 		if(output1.fail()){
-			cout << "尚未建立!(建立新檔)" << endl;
+			cout << "開啟失敗!" << endl;
 			system("pause");
 			menu(0);
 		}
 	}
 	if(filenameO2 != ""){
-		output2.open(filenameI1.c_str(),filemode);
+		switch(select){
+            case 1 :
+                output1.open(filenameO2.c_str(),ios::out);
+            case 2 :
+                output1.open(filenameO2.c_str(),ios::app);
+		}
 		if(output2.fail()){
-			cout << "尚未建立!(建立新檔)" << endl;
+			cout << "開啟失敗!" << endl;
 			system("pause");
 			menu(0);
 		}
 	}
 
-	analyze.open(file/analyze/example.txt,ios::app);
-	if(analyze.fail()){
-		system("cd.> file/analyze/example.txt");
-	}
-
 	string a;
 	while(cin >> a){
-		if(a!='.'){
+		if(a!=""){
 			cout << "End Input!!" << endl;
-			return 0;
+			break;
 		}else{
 
 		}
 	}
+
+	input1.close();
+	input2.close();
+	output1.close();
+	output2.close();
 	menu(0);
 };
 

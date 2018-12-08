@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1544192309 source:c:\users\cntfk\onedrive\орн▒\huffman\project\huffman\main.cpp
+	<cstdlib>
+	<iostream>
+	<fstream>
+	<string>
+	"frame.h"
+
+1544196148 c:\users\cntfk\onedrive\орн▒\huffman\project\huffman\frame.h
+	<cstdlib>
+	<iostream>
+	<fstream>
+	<string>
+
+1544197800 source:c:\users\cntfk\onedrive\орн▒\huffman\project\huffman\main.rc
+

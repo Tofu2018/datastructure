@@ -1,0 +1,31 @@
+<NotepadPlus>
+    <Project name="Huffman">
+        <Folder name="bin">
+            <Folder name="Debug">
+                <File name="bin\Debug\huffman.exe" />
+            </Folder>
+        </Folder>
+        <Folder name="file">
+            <Folder name="analyze" />
+            <Folder name="input" />
+            <Folder name="old">
+                <Folder name="analyze" />
+                <Folder name="input" />
+                <Folder name="output" />
+                <Folder name="tree" />
+            </Folder>
+            <Folder name="output" />
+            <Folder name="tree" />
+        </Folder>
+        <Folder name="obj">
+            <Folder name="Debug">
+                <File name="obj\Debug\main.o" />
+            </Folder>
+        </Folder>
+        <File name="frame.h" />
+        <File name="huffman.cbp" />
+        <File name="huffman.layout" />
+        <File name="main.cpp" />
+        <File name="huffman.rc" />
+    </Project>
+</NotepadPlus>
